@@ -7,5 +7,5 @@
 #' @import nimue
 #' @importFrom rlang .data
 #' @importFrom odin odin
-#' @useDynLib squire.page
+#' @useDynLib squire.page.sarsX
 NULL
