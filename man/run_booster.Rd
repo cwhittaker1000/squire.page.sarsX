@@ -54,18 +54,17 @@ run_booster(
   tt_vaccine_efficacy_infection = vaccine_pars_booster$tt_vaccine_efficacy_infection,
   vaccine_efficacy_disease = vaccine_pars_booster$vaccine_efficacy_disease,
   tt_vaccine_efficacy_disease = vaccine_pars_booster$tt_vaccine_efficacy_disease,
-  primary_doses = vaccine_pars_booster$primary_doses,
-  tt_primary_doses = vaccine_pars_booster$tt_primary_doses,
-  booster_doses = vaccine_pars_booster$booster_doses,
-  tt_booster_doses = vaccine_pars_booster$tt_booster_doses,
-  second_dose_delay = vaccine_pars_booster$second_dose_delay,
+  primary_doses = c(rep(0, 3), rep(vaccine_pars_booster$primary_doses, 50), rep(0, 365 -
+    50 - 3)),
+  second_doses = c(rep(0, 3), rep(0, 7), rep(vaccine_pars_booster$primary_doses, 50),
+    rep(0, 365 - 50 - 7 - 3)),
+  booster_doses = c(rep(0, 150), rep(vaccine_pars_booster$booster_doses, 100), rep(0, 365
+    - 150 - 100)),
   vaccine_coverage_mat = vaccine_pars_booster$vaccine_coverage_mat,
   vaccine_booster_initial_coverage =
     vaccine_pars_booster$vaccine_booster_initial_coverage,
   vaccine_booster_follow_up_coverage =
     vaccine_pars_booster$vaccine_booster_follow_up_coverage,
-  protection_delay_rate = vaccine_pars_booster$protection_delay_rate,
-  protection_delay_shape = vaccine_pars_booster$protection_delay_shape,
   hosp_bed_capacity = NULL,
   ICU_bed_capacity = NULL,
   tt_hosp_beds = 0,
@@ -247,13 +246,7 @@ changing vaccines being  given and dosing strategy changes.}
 
 \item{primary_doses}{The maximum number of individuals who can be vaccinated with their first dose per day.}
 
-\item{tt_primary_doses}{Time change points for vaccine capacity (\code{first_doses}).}
-
 \item{booster_doses}{The maximum number of individuals who can be vaccinated with their booster dose per day.}
-
-\item{tt_booster_doses}{Time change points for vaccine capacity (\code{booster_doses}).}
-
-\item{second_dose_delay}{Delay between first dose and second dose in the initial series, this model assume all who get first doses get a second dose, default = 60 (days).}
 
 \item{vaccine_coverage_mat}{Vaccine coverage targets by age (columns) and priority (row)}
 
@@ -262,12 +255,6 @@ default = NULL means all are eligible. Format: 0 indicates not eligible, 1 indic
 
 \item{vaccine_booster_follow_up_coverage}{Age group eligibility for follow-up boosters (i.e. 2nd, 3rd, ... booster doses),
 default = NULL means all are eligible. Format: 0 indicates not eligible, 1 indicates eligible.}
-
-\item{protection_delay_rate}{Rate for the delay in development of vaccine protection, applied via gamma/erlang distribution,
-default = 1/14. If NULL no delay is applied.}
-
-\item{protection_delay_shape}{Shape for the delay in development of vaccine protection, applied via gamma/erlang distribution,
-default = 1/14. If NULL no delay is applied.}
 
 \item{hosp_bed_capacity}{General bed capacity. Can be single number of vector if capacity time-varies.}
 
@@ -291,6 +278,18 @@ Default = NULL.}
 \item{use_dde}{Use the dde solver (default is \code{TRUE})}
 
 \item{...}{Additional arguments for solver}
+
+\item{tt_primary_doses}{Time change points for vaccine capacity (\code{first_doses}).}
+
+\item{second_dose_delay}{Delay between first dose and second dose in the initial series, this model assume all who get first doses get a second dose, default = 60 (days).}
+
+\item{tt_booster_doses}{Time change points for vaccine capacity (\code{booster_doses}).}
+
+\item{protection_delay_rate}{Rate for the delay in development of vaccine protection, applied via gamma/erlang distribution,
+default = 1/14. If NULL no delay is applied.}
+
+\item{protection_delay_shape}{Shape for the delay in development of vaccine protection, applied via gamma/erlang distribution,
+default = 1/14. If NULL no delay is applied.}
 }
 \value{
 Simulation output
